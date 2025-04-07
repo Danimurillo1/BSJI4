@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Deposit Account Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #333;
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+            background-color: #f8f9fa; /* Un fondo ligeramente gris para contraste */
+        }
+        .form-container { /* Contenedor para el formulario con fondo blanco */
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #003366;
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .date-row {
+             margin-bottom: 15px;
+             width: 150px;
+         }
+         .date-row label {
+             font-weight: bold;
+         }
+        h2 { /* Estilo para Títulos de Sección Principales */
+            font-size: 1.4em; /* Un poco más grande */
+            color: #003366;
+            border-bottom: 2px solid #0055a4; /* Línea azul más gruesa */
+            padding-bottom: 8px;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+         h3 { /* Estilo para Sub-secciones (como SECTION II dentro de Signer Info) */
+            font-size: 1.1em;
+            color: #333;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 5px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .section-description { /* Para textos descriptivos debajo de títulos */
+             font-size: 0.9em;
+             color: #555;
+             margin-top: -15px;
+             margin-bottom: 15px;
+        }
+        .instructions {
+            margin-bottom: 20px;
+            font-style: italic;
+            text-align: center;
+            color: #555;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Aumenta un poco el espacio */
+            margin-bottom: 15px; /* Aumenta espacio vertical */
+            align-items: flex-end;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 120px;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 5px; /* Pequeño margen inferior por si acaso */
+        }
+        /* Anchos específicos */
+        .form-group.address-field { flex: 3; }
+        .form-group.city-field { flex: 1; }
+        .form-group.partnership-select { flex-basis: 180px; flex-grow: 0; }
+        .form-group.explain-field { flex-grow: 2; }
+        .form-group.dob-field { flex-basis: 150px; flex-grow: 0;} /* Ancho fijo para DOB */
+        .form-group.id-num-field { flex: 2;}
+        .form-group.id-type-explain-group { flex: 2; } /* Contenedor para TypeID+Explain */
+        .form-group.issuing-country-field { flex: 1;}
+        .form-group.mailing-address-section2 { flex: 2;} /* Para la dirección en sección 2 */
+
+        .static-label-group {
+            flex-basis: auto;
+            flex-grow: 0;
+            padding-bottom: 8px;
+            margin-right: 5px;
+            white-space: nowrap;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        label {
+            margin-bottom: 5px; /* Más espacio */
+            font-weight: normal;
+            font-size: 0.9em;
+            color: #444; /* Ligeramente más oscuro */
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 9px 6px; /* Un poco más de padding */
+            border: none;
+            border-bottom: 1px solid #ccc;
+            background-color: #e6f7ff; /* Azul un poco más claro */
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.2s ease-in-out;
+        }
+        input:focus, select:focus, textarea:focus {
+             outline: none;
+             border-bottom: 2px solid #0055a4; /* Borde más notable al enfocar */
+        }
+        textarea { resize: vertical; min-height: 40px; }
+        select {
+            appearance: none;
+             background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+             background-repeat: no-repeat;
+             background-position: right 10px top 50%;
+             background-size: .65em auto;
+             padding-right: 30px;
+        }
+        /* Estilos para Checkbox y Radio en línea */
+        .checkbox-group, .radio-group {
+            flex-direction: row !important;
+            align-items: center;
+            flex-grow: 0; /* No crecen */
+            margin-right: 10px;
+            margin-bottom: 0 !important; /* Quita margen inferior */
+            padding-bottom: 8px; /* Alinea con inputs */
+        }
+        .checkbox-group input[type="checkbox"],
+        .radio-group input[type="radio"] {
+            width: auto;
+            margin-right: 5px;
+            margin-bottom: 0;
+             accent-color: #0055a4; /* Color del check/radio */
+        }
+        .checkbox-group label, .radio-group label {
+            margin-bottom: 0;
+            white-space: nowrap;
+            font-size: 0.9em;
+            color: #444;
+        }
+        .radio-group label { margin-right: 15px;} /* Espacio extra después de la etiqueta del radio */
+
+        /* Estilos para grupos anidados (Type ID + Explain) */
+        .form-group .form-group {
+             margin-bottom: 0;
+        }
+        .form-group .form-group label { /* Etiqueta para el campo Explain anidado */
+             font-size: 0.85em;
+             margin-top: 5px;
+        }
+
+        /* Estilos Tablas (sin cambios) */
+        .tables-container { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 20px; }
+        .table-wrapper { flex: 1; min-width: 300px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+        th { text-align: left; font-weight: normal; padding-bottom: 8px; font-size: 0.9em; color: #555; }
+        td { padding-bottom: 5px; vertical-align: middle; }
+        td input[type="text"] { margin: 0; background-color: #e6f7ff; }
+        .table-header-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .table-header-controls h3 { margin: 0; }
+        button.add-row-btn, button.remove-row-btn { padding: 5px 10px; cursor: pointer; border: 1px solid #aaa; background-color: #f0f0f0; border-radius: 4px; font-size: 0.9em; }
+        button.add-row-btn:hover, button.remove-row-btn:hover { background-color: #e0e0e0; border-color: #888; }
+        button.remove-row-btn { background-color: #ffe0e0; border-color: #f7a0a0; margin-left: 5px; }
+        button.remove-row-btn:hover { background-color: #ffcccc; border-color: #ff8a8a; }
+        th.action-column, td.action-column { text-align: center; width: 80px; }
+
+    </style>
+</head>
+<body>
+<div class="form-container"> <h1>Corporate Deposit Account Application</h1>
+    <div class="date-row">
+         <label for="date">Date</label>
+         <input type="date" id="date" name="date">
+    </div>
+    <p class="instructions">
+        Please complete the attached Certificate of Resolution and Certification of Beneficial Owner(s)
+    </p>
+
+    <form action="#" method="post">
+
+        <h2>SECTION I: Entity Information</h2>
+        <div class="form-row">
+            <div class="form-group" style="flex: 1;">
+                <label for="company-name">Company name / Business name</label>
+                <input type="text" id="company-name" name="company_name">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="tax-id">Tax ID No.</label>
+                <input type="text" id="tax-id" name="tax_id">
+            </div>
+            <div class="form-group">
+                <label for="exp-date">Expiration date</label>
+                <input type="date" id="exp-date" name="exp_date">
+            </div>
+             <div class="form-group">
+                <label for="commercial-activity">Commercial activity</label>
+                <input type="text" id="commercial-activity" name="commercial_activity">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="incorporation-registry">Incorporation / Registry</label>
+                <input type="text" id="incorporation-registry" name="incorporation_registry">
+            </div>
+             <div class="form-group">
+                <label for="incorporation-country">Country</label>
+                <input type="text" id="incorporation-country" name="incorporation_country">
+            </div>
+            <div class="form-group">
+                <label for="incorporation-date">Date of incorporation</label>
+                <input type="date" id="incorporation-date" name="incorporation_date">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group address-field">
+                <label for="physical-address">Physical address</label>
+                <input type="text" id="physical-address" name="physical_address">
+            </div>
+            <div class="form-group city-field">
+                 <label for="physical-city">City</label>
+                 <input type="text" id="physical-city" name="physical_city">
+             </div>
+        </div>
+        <div class="form-row">
+             <div class="form-group">
+                 <label for="physical-state">State / Province</label>
+                 <input type="text" id="physical-state" name="physical_state">
+             </div>
+             <div class="form-group">
+                 <label for="physical-zip">ZIP code</label>
+                 <input type="text" id="physical-zip" name="physical_zip">
+             </div>
+              <div class="form-group">
+                 <label for="physical-country">Country</label>
+                 <input type="text" id="physical-country" name="physical_country">
+             </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group address-field">
+                <label for="mailing-address">Mailing address (if different from physical address)</label>
+                <input type="text" id="mailing-address" name="mailing_address">
+            </div>
+            <div class="form-group city-field">
+                <label for="mailing-city">City</label>
+                <input type="text" id="mailing-city" name="mailing_city">
+            </div>
+        </div>
+        <div class="form-row">
+             <div class="form-group">
+                <label for="mailing-state">State / Province</label>
+                <input type="text" id="mailing-state" name="mailing_state">
+            </div>
+             <div class="form-group">
+                <label for="mailing-zip">ZIP code</label>
+                <input type="text" id="mailing-zip" name="mailing_zip">
+            </div>
+             <div class="form-group">
+                <label for="mailing-country">Country</label>
+                <input type="text" id="mailing-country" name="mailing_country">
+            </div>
+             <div class="form-group">
+                <label for="telephone">Telephone No.</label>
+                <input type="tel" id="telephone" name="telephone">
+             </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="alt-telephone">Alternate telephone No.</label>
+                <input type="tel" id="alt-telephone" name="alt_telephone">
+            </div>
+             <div class="form-group">
+                <label for="admin-email">Account administrator email</label>
+                <input type="email" id="admin-email" name="admin_email">
+            </div>
+             <div class="form-group">
+                <label for="website">Website</label>
+                <input type="url" id="website" name="website">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="country-operations">Country of operations</label>
+                <input type="text" id="country-operations" name="country_operations">
+            </div>
+            <div class="form-group">
+                <label for="registration-no">Registration No.</label>
+                <input type="text" id="registration-no" name="registration_no">
+            </div>
+        </div>
+         <div class="form-row">
+             <div class="static-label-group">
+                 <span>Entity has (Yes or No):</span>
+             </div>
+             <div class="form-group partnership-select">
+                <label for="partnership-agreements">Partnership Agreements?</label>
+                <select id="partnership-agreements" name="partnership_agreements">
+                    <option value="">--</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div class="form-group explain-field">
+                <label for="explain">Explain</label>
+                <textarea id="explain" name="explain" rows="1"></textarea>
+            </div>
+        </div>
+        <div class="tables-container">
+            <div class="table-wrapper">
+                <div class="table-header-controls">
+                    <h3>Main shareholders</h3>
+                    <button type="button" class="add-row-btn" onclick="addShareholderRow()">Add +</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name of shareholder</th>
+                            <th style="width: 80px;">% of shares</th>
+                            <th class="action-column">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="shareholders-body">
+                        <tr>
+                            <td><input type="text" name="shareholder_name[]"></td>
+                            <td><input type="text" name="shareholder_shares[]"></td>
+                            <td class="action-column">
+                                <button type="button" class="remove-row-btn" onclick="removeRow(this)">Remove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-wrapper">
+                 <div class="table-header-controls">
+                    <h3>Board of directors</h3>
+                    <button type="button" class="add-row-btn" onclick="addDirectorRow()">Add +</button>
+                 </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Names and surnames</th>
+                            <th style="width: 150px;">Position</th>
+                            <th class="action-column">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="directors-body">
+                        <tr>
+                            <td><input type="text" name="director_name[]"></td>
+                            <td><input type="text" name="director_position[]"></td>
+                            <td class="action-column">
+                                <button type="button" class="remove-row-btn" onclick="removeRow(this)">Remove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <h2>Signer/Control Person/Stockholder Information 1</h2>
+
+        <p class="section-description">
+            Check if you are a Signer, Shareholder and/or Control person of the legal entity that owns this account and complete the information (check all that apply).
+        </p>
+
+        <div class="form-row">
+            <div class="checkbox-group">
+                <input type="checkbox" id="signer_role_1" name="signer_role_1" value="yes">
+                <label for="signer_role_1">Signer</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="stockholder_role_1" name="stockholder_role_1" value="yes">
+                <label for="stockholder_role_1">Stockholder</label>
+            </div>
+            <div class="form-group" style="flex-basis: 100px; flex-grow: 0;"> <label for="stockholder_shares_pct_1">% of shares</label>
+                 <input type="text" id="stockholder_shares_pct_1" name="stockholder_shares_pct_1">
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="control_person_role_1" name="control_person_role_1" value="yes">
+                <label for="control_person_role_1">Control person</label>
+            </div>
+             <div class="form-group" style="flex-grow: 1;"></div> </div>
+
+        <div class="form-row">
+             <div class="form-group">
+                 <label for="signer_position_1">Position</label>
+                 <input type="text" id="signer_position_1" name="signer_position_1">
+             </div>
+             <div class="form-group">
+                 <label for="signer_profession_1">Profession</label>
+                 <input type="text" id="signer_profession_1" name="signer_profession_1">
+             </div>
+             <div class="form-group">
+                 <label for="signer_power_attorney_1">Information of power of attorney certifying representation</label>
+                 <input type="text" id="signer_power_attorney_1" name="signer_power_attorney_1">
+             </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="signer_names_1">Names</label>
+                <input type="text" id="signer_names_1" name="signer_names_1">
+            </div>
+            <div class="form-group">
+                <label for="signer_surnames_1">Surnames</label>
+                <input type="text" id="signer_surnames_1" name="signer_surnames_1">
+            </div>
